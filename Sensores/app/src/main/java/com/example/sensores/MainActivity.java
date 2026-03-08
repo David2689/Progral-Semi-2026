@@ -36,7 +36,7 @@ SensorEventListener sensorEventListener;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        sensorLuz();
+        sensorAcelerometro();
         }
         private void iniciar(){
         sensorManager.registerListener(sensorEventListener, sensor, 2000*1000);
@@ -45,12 +45,12 @@ SensorEventListener sensorEventListener;
         sensorManager.unregisterListener(sensorEventListener);
     }
 
-    private void sensorLuz(){
-        temVal = findViewById(R.id.lblSensorLuz);
+    private void sensorAcelerometro(){
+        temVal = findViewById(R.id.lblAcelerometro);
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         if(sensor==null){
-            temVal.setText("No dispones del sensor de Luz");
+            temVal.setText("No dispones del sensor de Acelerometro");
             finish();
         }
         sensorEventListener = new SensorEventListener() {
@@ -61,20 +61,11 @@ SensorEventListener sensorEventListener;
 
             @Override
             public void onSensorChanged(SensorEvent sensorEvent) {
-                double valor = sensorEvent.values[0];
-                temVal.setText("Luz " + valor);
-                int color = Color.BLACK;
-                if(valor>=0 && valor<=50){
-                    color = Color.GRAY;
-                }
-                if(valor>=51 && valor<=100){
-                    color = Color.YELLOW;
-                }
-                if(valor>=101 && valor<=1000){
-                    color = Color.BLUE;
-                }
+                double x = sensorEvent.values[0];
+                double y = sensorEvent.values[1];
+                double z = sensorEvent.values[2];
+                temVal.setText("Desplazamiento: X: " + x +"; Y:"+y +"; Z:"+z);
 
-                getWindow().getDecorView().setBackgroundColor(color);
             }
         };
         }
