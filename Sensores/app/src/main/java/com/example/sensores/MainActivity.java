@@ -36,7 +36,7 @@ SensorEventListener sensorEventListener;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        sensorproximidad();
+        sensorLuz();
         }
         private void iniciar(){
         sensorManager.registerListener(sensorEventListener, sensor, 2000*1000);
@@ -45,12 +45,12 @@ SensorEventListener sensorEventListener;
         sensorManager.unregisterListener(sensorEventListener);
     }
 
-    private void sensorproximidad(){
-        temVal = findViewById(R.id.lblSensorProximidad);
+    private void sensorLuz(){
+        temVal = findViewById(R.id.lblSensorLuz);
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
         if(sensor==null){
-            temVal.setText("No dispones del sensor de proximidad");
+            temVal.setText("No dispones del sensor de Luz");
             finish();
         }
         sensorEventListener = new SensorEventListener() {
@@ -62,10 +62,16 @@ SensorEventListener sensorEventListener;
             @Override
             public void onSensorChanged(SensorEvent sensorEvent) {
                 double valor = sensorEvent.values[0];
-                temVal.setText("Proximidad " + valor);
+                temVal.setText("Luz " + valor);
                 int color = Color.BLACK;
-                if(valor<=4){
-                    color = Color.WHITE;
+                if(valor>=0 && valor<=50){
+                    color = Color.GRAY;
+                }
+                if(valor>=51 && valor<=100){
+                    color = Color.YELLOW;
+                }
+                if(valor>=101 && valor<=1000){
+                    color = Color.BLUE;
                 }
 
                 getWindow().getDecorView().setBackgroundColor(color);
