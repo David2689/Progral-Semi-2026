@@ -7,13 +7,72 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/txtNombreAmigos"
+        android:hint="Nombre"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/txtDireccionAmigos"
+        android:hint="Direccion"
+        android:layout_below="@id/txtNombreAmigos"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/txtTelefonoAmigos"
+        android:hint="Telefono"
+        android:layout_below="@id/txtDireccionAmigos"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/txtEmailAmigos"
+        android:hint="Email"
+        android:layout_below="@id/txtTelefonoAmigos"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/txtDuiAmigos"
+        android:hint="Dui"
+        android:layout_below="@id/txtEmailAmigos"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <ImageButton
+        android:id="@+id/imgFotoAmigo"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/txtDuiAmigos"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/portrait_17368301"
+        android:layout_width="100dp"
+        android:layout_height="100dp"/>
+    <Button
+        android:id="@+id/btnGuardarAmigo"
+        android:text="Guardar Amigo"
+        android:layout_below="@+id/imgFotoAmigo"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabListaAmigo"
+        android:src="@drawable/arrow_16537340"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>
