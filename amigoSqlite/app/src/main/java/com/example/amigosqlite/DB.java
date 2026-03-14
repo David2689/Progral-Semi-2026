@@ -15,8 +15,8 @@ public class DB extends SQLiteOpenHelper {
             "nombre TEXT, direccion TEXT, telefono TEXT, " +
             "email TEXT, dui TEXT, urlFoto TEXT)";
 
-    public DB(@Nullable Context context, @Nullable SQLiteDatabase.CursorFactory factory) {
-        super(context, DataBase_Name, factory, DataBase_Version);
+    public DB(@Nullable Context context) {
+        super(context, DataBase_Name, null, DataBase_Version);
     }
 
     @Override
