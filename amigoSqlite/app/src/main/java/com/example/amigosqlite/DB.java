@@ -15,7 +15,7 @@ public class DB extends SQLiteOpenHelper {
             "nombre TEXT, direccion TEXT, telefono TEXT, " +
             "email TEXT, dui TEXT, urlFoto TEXT)";
 
-    public DB(@Nullable Context context) {
+    public DB(Context context) {
         super(context, DataBase_Name, null, DataBase_Version);
     }
 

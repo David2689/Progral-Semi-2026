@@ -10,15 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -43,6 +40,32 @@ public class MainActivity extends AppCompatActivity {
         btn = findViewById(R.id.btnGuardarAmigo);
         btn.setOnClickListener(v -> guardarAmigo());
         fab = findViewById(R.id.fabListaAmigo);
+        fab.setOnClickListener(v -> regresarListaAmigos());
+        mostrarDatosAmigos();
+    }
+    private void  mostrarDatosAmigos(){
+        try {
+            Bundle parametros = getIntent().getExtras();
+            accion = parametros.getString("accion");
+            if (accion.equals("modificar")){
+                JSONObject datos = new JSONObject(parametros.getString("amigos"));
+                idAmigo = datos.getString("idAmigo"); // ✅ Corregido: "diAmigo" → "idAmigo"
+                temVal = findViewById(R.id.txtNombreAmigos);
+                temVal.setText(datos.getString("nombre")); // ✅ Corregido: getText → setText
+                temVal = findViewById(R.id.txtDireccionAmigos);
+                temVal.setText(datos.getString("direccion")); // ✅
+                temVal = findViewById(R.id.txtTelefonoAmigos);
+                temVal.setText(datos.getString("telefono")); // ✅
+                temVal = findViewById(R.id.txtEmailAmigos);
+                temVal.setText(datos.getString("email")); // ✅
+                temVal = findViewById(R.id.txtDuiAmigos);
+                temVal.setText(datos.getString("dui")); // ✅
+                urlFoto = datos.getString("foto");
+                img.setImageURI(Uri.parse(urlFoto));
+            }
+        } catch (Exception e) {
+            mostrarMsg("Error al mostrar los datos: "+ e.getMessage());
+        }
     }
 
     private void tomarfoto() {
@@ -103,8 +126,14 @@ public class MainActivity extends AppCompatActivity {
         String[] datos = {idAmigo, nombre,direccion,telefono,email,dui,urlFoto};
         db.administrar_amigos(accion, datos);
         mostrarMsg("Registro de amigo guardado con exito.");;
+
+        regresarListaAmigos();
     }
     private void mostrarMsg(String msg){
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    }
+    private void regresarListaAmigos(){
+        Intent intent = new Intent(this, lista_amigos.class);
+        startActivity(intent);
     }
 }
