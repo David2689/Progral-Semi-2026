@@ -1,20 +1,36 @@
 package com.example.tienda_android_ropa;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.widget.*;
 import androidx.activity.result.*;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import android.content.pm.PackageManager;
+import android.Manifest;
+
 public class AgregarActivity extends AppCompatActivity {
 
     private EditText etCodigo, etNombre, etMarca, etTalla, etPrecio, etDescripcion;
     private ImageView imgPreview;
     private String fotoPath = "";
+    private Uri fotoUri;
     private ProductoDAO dao;
 
+    // Lanzador para galería
     private final ActivityResultLauncher<String> pickImage =
             registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
                 if (uri != null) {
@@ -24,6 +40,18 @@ public class AgregarActivity extends AppCompatActivity {
                             .into(imgPreview);
                 }
             });
+
+    // Lanzador para cámara
+    private final ActivityResultLauncher<Uri> takePicture =
+            registerForActivityResult(new ActivityResultContracts.TakePicture(), success -> {
+                if (success && fotoUri != null) {
+                    fotoPath = fotoUri.toString();
+                    Glide.with(this).load(fotoUri)
+                            .transform(new CircleCrop())
+                            .into(imgPreview);
+                }
+            });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +68,8 @@ public class AgregarActivity extends AppCompatActivity {
         imgPreview = findViewById(R.id.imgPreview);
         Button btnFoto = findViewById(R.id.btnSeleccionarFoto);
         Button btnGuardar = findViewById(R.id.btnGuardar);
-        btnFoto.setOnClickListener(v -> pickImage.launch("image/*"));
+
+        btnFoto.setOnClickListener(v -> mostrarOpcionesFoto());
 
         btnGuardar.setOnClickListener(v -> {
             if (validar()) {
@@ -63,6 +92,56 @@ public class AgregarActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void mostrarOpcionesFoto() {
+        new AlertDialog.Builder(this)
+                .setTitle("Seleccionar foto")
+                .setItems(new String[]{"Tomar foto", "Elegir de galería"}, (dialog, which) -> {
+                    if (which == 0) {
+                        abrirCamara();
+                    } else {
+                        pickImage.launch("image/*");
+                    }
+                })
+                .show();
+    }
+
+    private void abrirCamara() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA}, 100);
+        } else {
+            lanzarCamara();
+        }
+    }
+
+    private void lanzarCamara() {
+        try {
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                    Locale.getDefault()).format(new Date());
+            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File fotoFile = File.createTempFile("IMG_" + timeStamp, ".jpg", storageDir);
+            fotoUri = FileProvider.getUriForFile(this,
+                    "com.example.tienda_android_ropa.fileprovider", fotoFile);
+            takePicture.launch(fotoUri);
+        } catch (IOException e) {
+            Toast.makeText(this, "Error al abrir cámara", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 100 && grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            lanzarCamara();
+        } else {
+            Toast.makeText(this, "Permiso de cámara denegado", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private boolean validar() {
         if (etCodigo.getText().toString().trim().isEmpty()) {
             etCodigo.setError("Requerido"); return false;
