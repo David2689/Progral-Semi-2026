@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     DB db;
     Button btn;
     TextView temVal;
-    String accion = "nuevo", idAmigo = "", urlFoto;
+    String accion = "nuevo", idAmigo = "", urlFoto, id="", rev="";
     Intent tomarFotoIntent;
     FloatingActionButton fab;
     ImageView img;
@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
             accion = parametros.getString("accion");
             if (accion.equals("modificar")){
                 JSONObject datos = new JSONObject(parametros.getString("amigos"));
+                id = datos.getString("_id");
+                rev = datos.getString("_rev");
                 idAmigo = datos.getString("idAmigo"); // ✅ Corregido: "diAmigo" → "idAmigo"
                 temVal = findViewById(R.id.txtNombreAmigos);
                 temVal.setText(datos.getString("nombre")); // ✅ Corregido: getText → setText
@@ -112,22 +114,47 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void guardarAmigo(){
-        temVal = findViewById(R.id.txtNombreAmigos);
-        String nombre =temVal.getText().toString();
-        temVal = findViewById(R.id.txtDireccionAmigos);
-        String direccion =temVal.getText().toString();
-        temVal = findViewById(R.id.txtTelefonoAmigos);
-        String telefono =temVal.getText().toString();
-        temVal = findViewById(R.id.txtEmailAmigos);
-        String email =temVal.getText().toString();
-        temVal = findViewById(R.id.txtDuiAmigos);
-        String dui =temVal.getText().toString();
+        try {
+            temVal = findViewById(R.id.txtNombreAmigos);
+            String nombre = temVal.getText().toString();
+            temVal = findViewById(R.id.txtDireccionAmigos);
+            String direccion = temVal.getText().toString();
+            temVal = findViewById(R.id.txtTelefonoAmigos);
+            String telefono = temVal.getText().toString();
+            temVal = findViewById(R.id.txtEmailAmigos);
+            String email = temVal.getText().toString();
+            temVal = findViewById(R.id.txtDuiAmigos);
+            String dui = temVal.getText().toString();
 
-        String[] datos = {idAmigo, nombre,direccion,telefono,email,dui,urlFoto};
-        db.administrar_amigos(accion, datos);
-        mostrarMsg("Registro de amigo guardado con exito.");;
+            String[] datos = {idAmigo, nombre, direccion, telefono, email, dui, urlFoto};
+            db.administrar_amigos(accion, datos);
+            JSONObject datosAmigos = new JSONObject();
+            if (accion.equals("modificar")){
+                datosAmigos.put("_id", id);
+                datosAmigos.put("_rev", rev);
+            }
+            datosAmigos.put("idAmigo", idAmigo);
+            datosAmigos.put("nombre", nombre);
+            datosAmigos.put("telefono", telefono);
+            datosAmigos.put("email", email);
+            datosAmigos.put("dui", dui);
+            datosAmigos.put("urlFoto", urlFoto);
+            enviarDatosServidor enviarDatosServidor = new enviarDatosServidor(this);
+            String respuesta = enviarDatosServidor.execute(datosAmigos.toString(), "POST", utilidades.url_mta).get();
+            JSONObject repuestaJSON = new JSONObject(respuesta);
+            if (repuestaJSON.optBoolean("ok")){
+                id = repuestaJSON.getString("id");
+                rev = repuestaJSON.getString("rev");
+            }else {
+                mostrarMsg("Error: "+ repuestaJSON.getString("msg"));
+            }
+            mostrarMsg("Registro de amigo guardado con exito.");
+            ;
 
-        regresarListaAmigos();
+            regresarListaAmigos();
+        } catch (Exception e) {
+            mostrarMsg(e.getMessage());
+        }
     }
     private void mostrarMsg(String msg){
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
