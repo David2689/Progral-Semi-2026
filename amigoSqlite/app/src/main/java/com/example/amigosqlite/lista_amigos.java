@@ -37,6 +37,8 @@ public class lista_amigos extends Activity {
     FloatingActionButton fab;
     ListView ltsAmigos;
     Cursor cAmigos;
+    detectarinternet di;
+    obtenerDatosServidor obtenerDatosServidor;
     final ArrayList<Amigos> alAmigos = new ArrayList<Amigos>();
     final ArrayList<Amigos> alAmigosCopia = new ArrayList<Amigos>();
     JSONArray jsonArray;
@@ -152,6 +154,13 @@ public class lista_amigos extends Activity {
     }
     private void obtenerAmigos(){
         try{
+            di= new detectarinternet(this);
+            if(di.hayConexionInternet());
+            datosServidor = new datosServidor.excute().get();
+            String respuesta = datosServidor.excute().get();
+            jsonObject = new JSONObject(respuesta);
+            JSONArray = jsonObject.getJSONArray("rows");
+            mostrarAmigos();
             cAmigos = db.lista_amigos();
             if( cAmigos.moveToFirst() ){
                 jsonArray = new JSONArray();
@@ -183,7 +192,7 @@ public class lista_amigos extends Activity {
                 alAmigosCopia.clear();
 
                 for(int i=0; i<jsonArray.length(); i++){
-                    jsonObject = jsonArray.getJSONObject(i);
+                    jsonObject = jsonArray.getJSONObject(i).getJSONObject("value");
                     misAmigos = new Amigos(
                             jsonObject.getString("idAmigo"),
                             jsonObject.getString("nombre"),
