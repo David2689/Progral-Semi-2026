@@ -154,13 +154,6 @@ public class lista_amigos extends Activity {
     }
     private void obtenerAmigos(){
         try{
-            di= new detectarinternet(this);
-            if(di.hayConexionInternet());
-            datosServidor = new datosServidor.excute().get();
-            String respuesta = datosServidor.excute().get();
-            jsonObject = new JSONObject(respuesta);
-            JSONArray = jsonObject.getJSONArray("rows");
-            mostrarAmigos();
             cAmigos = db.lista_amigos();
             if( cAmigos.moveToFirst() ){
                 jsonArray = new JSONArray();
