@@ -4,15 +4,11 @@ plugins {
 
 android {
     namespace = "com.example.tiendaropa2"
-    compileSdk {
-        version = release(23) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk= 36
 
     defaultConfig {
         applicationId = "com.example.tiendaropa2"
-        minSdk = 21
+        minSdk = 30
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"

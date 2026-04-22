@@ -29,8 +29,10 @@ public class SyncManager {
     public void verificarConexion(SyncCallback callback) {
         new Thread(() -> {
             try {
+                String url = CouchDBHelper.getUrl();
+                Log.e(TAG, "Intentando conectar a: " + url);
                 Request request = new Request.Builder()
-                        .url(CouchDBHelper.getUrl())
+                        .url(url)
                         .header("Authorization", "Basic " + CouchDBHelper.getCredenciales())
                         .build();
                 Response response = client.newCall(request).execute();
@@ -40,6 +42,7 @@ public class SyncManager {
                     else callback.onError("Sin conexión");
                 });
             } catch (Exception e) {
+                Log.e(TAG, "Error de conexión: " + e.getMessage());
                 new Handler(Looper.getMainLooper()).post(() ->
                         callback.onError("Sin conexión"));
             }
