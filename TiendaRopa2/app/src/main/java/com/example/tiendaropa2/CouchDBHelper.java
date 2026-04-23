@@ -3,7 +3,7 @@ package com.example.tiendaropa2;
 public class CouchDBHelper {
 
     private static final String BASE_URL = "http://192.168.1.5:5984";
-    private static final String DATABASE = "tienda_ropa";
+    private static final String DATABASE = "david";
     private static final String USUARIO = "david123";
     private static final String PASSWORD = "12345";
 

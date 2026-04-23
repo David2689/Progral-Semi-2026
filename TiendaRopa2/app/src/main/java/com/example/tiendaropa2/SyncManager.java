@@ -29,10 +29,8 @@ public class SyncManager {
     public void verificarConexion(SyncCallback callback) {
         new Thread(() -> {
             try {
-                String url = CouchDBHelper.getUrl();
-                Log.e(TAG, "Intentando conectar a: " + url);
                 Request request = new Request.Builder()
-                        .url(url)
+                        .url(CouchDBHelper.getUrl())
                         .header("Authorization", "Basic " + CouchDBHelper.getCredenciales())
                         .build();
                 Response response = client.newCall(request).execute();
@@ -42,7 +40,6 @@ public class SyncManager {
                     else callback.onError("Sin conexión");
                 });
             } catch (Exception e) {
-                Log.e(TAG, "Error de conexión: " + e.getMessage());
                 new Handler(Looper.getMainLooper()).post(() ->
                         callback.onError("Sin conexión"));
             }
@@ -72,6 +69,8 @@ public class SyncManager {
                     p.setMarca(doc.optString("marca", ""));
                     p.setTalla(doc.optString("talla", ""));
                     p.setPrecio(doc.optDouble("precio", 0));
+                    p.setCosto(doc.optDouble("costo", 0));        // ← nuevo
+                    p.setStock(doc.optInt("stock", 0));            // ← nuevo
                     p.setDescripcion(doc.optString("descripcion", ""));
                     p.setFotoPath(doc.optString("foto_path", ""));
                     p.setCouchId(id);
@@ -100,6 +99,9 @@ public class SyncManager {
                 json.put("marca", p.getMarca());
                 json.put("talla", p.getTalla());
                 json.put("precio", p.getPrecio());
+                json.put("costo", p.getCosto());                   // ← nuevo
+                json.put("ganancia", p.getGanancia());             // ← nuevo (calculada)
+                json.put("stock", p.getStock());                   // ← nuevo
                 json.put("descripcion", p.getDescripcion());
                 json.put("presentacion", "Unidad");
                 json.put("foto_path", p.getFotoPath() != null ? p.getFotoPath() : "");
@@ -144,6 +146,9 @@ public class SyncManager {
                 json.put("marca", p.getMarca());
                 json.put("talla", p.getTalla());
                 json.put("precio", p.getPrecio());
+                json.put("costo", p.getCosto());                   // ← nuevo
+                json.put("ganancia", p.getGanancia());             // ← nuevo (calculada)
+                json.put("stock", p.getStock());                   // ← nuevo
                 json.put("descripcion", p.getDescripcion());
                 json.put("presentacion", "Unidad");
                 json.put("foto_path", p.getFotoPath() != null ? p.getFotoPath() : "");

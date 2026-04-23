@@ -23,7 +23,8 @@ import java.util.Locale;
 
 public class EditarActivity extends AppCompatActivity {
 
-    private EditText etCodigo, etNombre, etMarca, etTalla, etPrecio, etDescripcion;
+    private EditText etCodigo, etNombre, etMarca, etTalla, etPrecio,
+            etCosto, etStock, etDescripcion;   // ← nuevos
     private ImageView imgPreview;
     private String fotoPath = "";
     private Uri fotoUri;
@@ -61,21 +62,26 @@ public class EditarActivity extends AppCompatActivity {
         dao = new ProductoDAO(this);
         syncManager = new SyncManager(this);
 
-        etCodigo = findViewById(R.id.etCodigo);
-        etNombre = findViewById(R.id.etNombre);
-        etMarca = findViewById(R.id.etMarca);
-        etTalla = findViewById(R.id.etTalla);
-        etPrecio = findViewById(R.id.etPrecio);
+        etCodigo      = findViewById(R.id.etCodigo);
+        etNombre      = findViewById(R.id.etNombre);
+        etMarca       = findViewById(R.id.etMarca);
+        etTalla       = findViewById(R.id.etTalla);
+        etPrecio      = findViewById(R.id.etPrecio);
+        etCosto       = findViewById(R.id.etCosto);
+        etStock       = findViewById(R.id.etStock);
         etDescripcion = findViewById(R.id.etDescripcion);
-        imgPreview = findViewById(R.id.imgPreview);
+        imgPreview    = findViewById(R.id.imgPreview);
 
+        // Cargar datos existentes
         productoId = getIntent().getIntExtra("id", -1);
-        couchId = getIntent().getStringExtra("couchId");
+        couchId    = getIntent().getStringExtra("couchId");
         etCodigo.setText(getIntent().getStringExtra("codigo"));
         etNombre.setText(getIntent().getStringExtra("nombre"));
         etMarca.setText(getIntent().getStringExtra("marca"));
         etTalla.setText(getIntent().getStringExtra("talla"));
         etPrecio.setText(String.valueOf(getIntent().getDoubleExtra("precio", 0)));
+        etCosto.setText(String.valueOf(getIntent().getDoubleExtra("costo", 0)));
+        etStock.setText(String.valueOf(getIntent().getIntExtra("stock", 0)));
         etDescripcion.setText(getIntent().getStringExtra("descripcion"));
         fotoPath = getIntent().getStringExtra("foto");
 
@@ -88,12 +94,19 @@ public class EditarActivity extends AppCompatActivity {
         findViewById(R.id.btnSeleccionarFoto).setOnClickListener(v -> mostrarOpcionesFoto());
 
         findViewById(R.id.btnGuardar).setOnClickListener(v -> {
+            double costo = etCosto.getText().toString().trim().isEmpty()
+                    ? 0 : Double.parseDouble(etCosto.getText().toString().trim());
+            int stock = etStock.getText().toString().trim().isEmpty()
+                    ? 0 : Integer.parseInt(etStock.getText().toString().trim());
+
             Producto p = new Producto(
                     etCodigo.getText().toString().trim(),
                     etNombre.getText().toString().trim(),
                     etMarca.getText().toString().trim(),
                     etTalla.getText().toString().trim(),
                     Double.parseDouble(etPrecio.getText().toString().trim()),
+                    costo,   // ← nuevo
+                    stock,   // ← nuevo
                     etDescripcion.getText().toString().trim(),
                     fotoPath
             );

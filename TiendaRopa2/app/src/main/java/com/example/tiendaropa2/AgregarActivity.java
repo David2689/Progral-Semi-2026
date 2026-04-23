@@ -23,7 +23,8 @@ import java.util.Locale;
 
 public class AgregarActivity extends AppCompatActivity {
 
-    private EditText etCodigo, etNombre, etMarca, etTalla, etPrecio, etDescripcion;
+    private EditText etCodigo, etNombre, etMarca, etTalla, etPrecio,
+            etCosto, etStock, etDescripcion;   // ← nuevos
     private ImageView imgPreview;
     private String fotoPath = "";
     private Uri fotoUri;
@@ -59,31 +60,39 @@ public class AgregarActivity extends AppCompatActivity {
         dao = new ProductoDAO(this);
         syncManager = new SyncManager(this);
 
-        etCodigo = findViewById(R.id.etCodigo);
-        etNombre = findViewById(R.id.etNombre);
-        etMarca = findViewById(R.id.etMarca);
-        etTalla = findViewById(R.id.etTalla);
-        etPrecio = findViewById(R.id.etPrecio);
+        etCodigo      = findViewById(R.id.etCodigo);
+        etNombre      = findViewById(R.id.etNombre);
+        etMarca       = findViewById(R.id.etMarca);
+        etTalla       = findViewById(R.id.etTalla);
+        etPrecio      = findViewById(R.id.etPrecio);
+        etCosto       = findViewById(R.id.etCosto);
+        etStock       = findViewById(R.id.etStock);
         etDescripcion = findViewById(R.id.etDescripcion);
-        imgPreview = findViewById(R.id.imgPreview);
+        imgPreview    = findViewById(R.id.imgPreview);
 
         findViewById(R.id.btnSeleccionarFoto).setOnClickListener(v -> mostrarOpcionesFoto());
 
         findViewById(R.id.btnGuardar).setOnClickListener(v -> {
             if (validar()) {
+                double costo = etCosto.getText().toString().trim().isEmpty()
+                        ? 0 : Double.parseDouble(etCosto.getText().toString().trim());
+                int stock = etStock.getText().toString().trim().isEmpty()
+                        ? 0 : Integer.parseInt(etStock.getText().toString().trim());
+
                 Producto p = new Producto(
                         etCodigo.getText().toString().trim(),
                         etNombre.getText().toString().trim(),
                         etMarca.getText().toString().trim(),
                         etTalla.getText().toString().trim(),
                         Double.parseDouble(etPrecio.getText().toString().trim()),
+                        costo,
+                        stock,
                         etDescripcion.getText().toString().trim(),
                         fotoPath
                 );
                 long result = dao.insertar(p);
                 if (result > 0) {
                     p.setId((int) result);
-                    // Intentar subir a CouchDB
                     syncManager.subirProducto(p, new SyncManager.SyncCallback() {
                         @Override
                         public void onSuccess(String msg) {

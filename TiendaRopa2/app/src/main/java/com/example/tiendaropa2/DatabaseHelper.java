@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "tienda_ropa.db";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 3; // ← subimos la versión
 
     public static final String TABLE = "productos";
     public static final String COL_ID = "id";
@@ -16,6 +16,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_MARCA = "marca";
     public static final String COL_TALLA = "talla";
     public static final String COL_PRECIO = "precio";
+    public static final String COL_COSTO = "costo";
+    public static final String COL_STOCK = "stock";
     public static final String COL_DESCRIPCION = "descripcion";
     public static final String COL_FOTO = "foto_path";
     public static final String COL_COUCH_ID = "couch_id";
@@ -34,6 +36,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_MARCA + " TEXT, " +
                 COL_TALLA + " TEXT, " +
                 COL_PRECIO + " REAL, " +
+                COL_COSTO + " REAL DEFAULT 0, " +
+                COL_STOCK + " INTEGER DEFAULT 0, " +
                 COL_DESCRIPCION + " TEXT, " +
                 COL_FOTO + " TEXT, " +
                 COL_COUCH_ID + " TEXT DEFAULT '', " +
@@ -43,7 +47,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE);
-        onCreate(db);
+        if (oldVersion < 3) {
+            db.execSQL("ALTER TABLE " + TABLE + " ADD COLUMN " + COL_COSTO + " REAL DEFAULT 0");
+            db.execSQL("ALTER TABLE " + TABLE + " ADD COLUMN " + COL_STOCK + " INTEGER DEFAULT 0");
+        }
     }
 }

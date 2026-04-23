@@ -27,6 +27,9 @@ public class ProductoDAO {
         cv.put(DatabaseHelper.COL_FOTO, p.getFotoPath());
         cv.put(DatabaseHelper.COL_COUCH_ID, p.getCouchId() != null ? p.getCouchId() : "");
         cv.put(DatabaseHelper.COL_SINCRONIZADO, p.isSincronizado() ? 1 : 0);
+        cv.put(DatabaseHelper.COL_COSTO, p.getCosto());   // ← nuevo
+        cv.put(DatabaseHelper.COL_STOCK, p.getStock());   // ← nuevo
+        // getGanancia() se calcula automáticamente, NO se guarda en SQLite
         long result = db.insert(DatabaseHelper.TABLE, null, cv);
         db.close();
         return result;
@@ -75,6 +78,9 @@ public class ProductoDAO {
         cv.put(DatabaseHelper.COL_FOTO, p.getFotoPath());
         cv.put(DatabaseHelper.COL_COUCH_ID, p.getCouchId() != null ? p.getCouchId() : "");
         cv.put(DatabaseHelper.COL_SINCRONIZADO, p.isSincronizado() ? 1 : 0);
+        cv.put(DatabaseHelper.COL_COSTO, p.getCosto());   // ← nuevo
+        cv.put(DatabaseHelper.COL_STOCK, p.getStock());   // ← nuevo
+        // getGanancia() se calcula automáticamente, NO se guarda en SQLite
         int rows = db.update(DatabaseHelper.TABLE, cv,
                 DatabaseHelper.COL_ID + "=?", new String[]{String.valueOf(p.getId())});
         db.close();
@@ -137,6 +143,9 @@ public class ProductoDAO {
         p.setFotoPath(c.getString(c.getColumnIndexOrThrow(DatabaseHelper.COL_FOTO)));
         p.setCouchId(c.getString(c.getColumnIndexOrThrow(DatabaseHelper.COL_COUCH_ID)));
         p.setSincronizado(c.getInt(c.getColumnIndexOrThrow(DatabaseHelper.COL_SINCRONIZADO)) == 1);
+        p.setCosto(c.getDouble(c.getColumnIndexOrThrow(DatabaseHelper.COL_COSTO)));   // ← nuevo
+        p.setStock(c.getInt(c.getColumnIndexOrThrow(DatabaseHelper.COL_STOCK)));       // ← nuevo
+        // p.getGanancia() se calcula solo con precio y costo, no necesita leerse
         return p;
     }
 }

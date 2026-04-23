@@ -60,6 +60,37 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="11sp"/>
+            <TextView
+                android:id="@+id/tvCosto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Costo: $" />
+
+            <TextView
+                android:id="@+id/tvGanancia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ganancia: %" />
+
+            <TextView
+                android:id="@+id/tvStock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stock: 0" />
+
+            <EditText
+                android:id="@+id/etStock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Stock"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/etCosto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Costo"
+                android:inputType="numberDecimal" />
 
         </LinearLayout>
 

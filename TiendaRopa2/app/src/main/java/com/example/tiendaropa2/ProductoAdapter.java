@@ -40,7 +40,11 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.ViewHo
         h.tvPrecio.setText("$" + String.format("%.2f", p.getPrecio()));
         h.tvCodigo.setText("Cód: " + p.getCodigo());
 
-        // Indicador de sincronización
+        // ← nuevos: mostrar costo, ganancia y stock
+        h.tvCosto.setText("Costo: $" + String.format("%.2f", p.getCosto()));
+        h.tvGanancia.setText("Ganancia: " + String.format("%.1f", p.getGanancia()) + "%");
+        h.tvStock.setText("Stock: " + p.getStock());
+
         h.tvSync.setText(p.isSincronizado() ? "✓ Sync" : "⏳ Pendiente");
         h.tvSync.setTextColor(p.isSincronizado() ?
                 context.getColor(android.R.color.holo_green_light) :
@@ -70,18 +74,22 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.ViewHo
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgFoto;
-        TextView tvNombre, tvMarca, tvPrecio, tvCodigo, tvSync;
+        TextView tvNombre, tvMarca, tvPrecio, tvCodigo, tvSync,
+                tvCosto, tvGanancia, tvStock;   // ← nuevos
         ImageButton btnEditar, btnEliminar;
 
         ViewHolder(View v) {
             super(v);
-            imgFoto = v.findViewById(R.id.imgFoto);
-            tvNombre = v.findViewById(R.id.tvNombre);
-            tvMarca = v.findViewById(R.id.tvMarca);
-            tvPrecio = v.findViewById(R.id.tvPrecio);
-            tvCodigo = v.findViewById(R.id.tvCodigo);
-            tvSync = v.findViewById(R.id.tvSync);
-            btnEditar = v.findViewById(R.id.btnEditar);
+            imgFoto    = v.findViewById(R.id.imgFoto);
+            tvNombre   = v.findViewById(R.id.tvNombre);
+            tvMarca    = v.findViewById(R.id.tvMarca);
+            tvPrecio   = v.findViewById(R.id.tvPrecio);
+            tvCodigo   = v.findViewById(R.id.tvCodigo);
+            tvSync     = v.findViewById(R.id.tvSync);
+            tvCosto    = v.findViewById(R.id.tvCosto);
+            tvGanancia = v.findViewById(R.id.tvGanancia);
+            tvStock    = v.findViewById(R.id.tvStock);
+            btnEditar  = v.findViewById(R.id.btnEditar);
             btnEliminar = v.findViewById(R.id.btnEliminar);
         }
     }
