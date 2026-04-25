@@ -29,17 +29,20 @@ public class BuscarActivity extends AppCompatActivity {
                     @Override
                     public void onEditar(Producto p) {
                         Intent i = new Intent(BuscarActivity.this, EditarActivity.class);
-                        i.putExtra("id", p.getId());
-                        i.putExtra("codigo", p.getCodigo());
-                        i.putExtra("nombre", p.getNombre());
-                        i.putExtra("marca", p.getMarca());
-                        i.putExtra("talla", p.getTalla());
-                        i.putExtra("precio", p.getPrecio());
+                        i.putExtra("id",          p.getId());
+                        i.putExtra("codigo",      p.getCodigo());
+                        i.putExtra("nombre",      p.getNombre());
+                        i.putExtra("marca",       p.getMarca());
+                        i.putExtra("talla",       p.getTalla());
+                        i.putExtra("precio",      p.getPrecio());
+                        i.putExtra("costo",       p.getCosto());   // ← nuevo
+                        i.putExtra("stock",       p.getStock());   // ← nuevo
                         i.putExtra("descripcion", p.getDescripcion());
-                        i.putExtra("foto", p.getFotoPath());
-                        i.putExtra("couchId", p.getCouchId());
+                        i.putExtra("foto",        p.getFotoPath());
+                        i.putExtra("couchId",     p.getCouchId());
                         startActivity(i);
                     }
+
                     @Override
                     public void onEliminar(Producto p) {
                         new androidx.appcompat.app.AlertDialog.Builder(BuscarActivity.this)
@@ -55,7 +58,8 @@ public class BuscarActivity extends AppCompatActivity {
                                                 });
                                     }
                                     adapter.actualizarLista(dao.buscar(
-                                            ((EditText) findViewById(R.id.etBuscar)).getText().toString()
+                                            ((EditText) findViewById(R.id.etBuscar))
+                                                    .getText().toString()
                                     ));
                                 })
                                 .setNegativeButton("Cancelar", null)

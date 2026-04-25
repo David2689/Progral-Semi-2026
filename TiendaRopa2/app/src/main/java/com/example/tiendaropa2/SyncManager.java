@@ -29,17 +29,23 @@ public class SyncManager {
     public void verificarConexion(SyncCallback callback) {
         new Thread(() -> {
             try {
+                String url = CouchDBHelper.getUrl();
+                Log.e(TAG, "Conectando a: " + url);
+                Log.e(TAG, "Credenciales: " + CouchDBHelper.getCredenciales());
                 Request request = new Request.Builder()
-                        .url(CouchDBHelper.getUrl())
+                        .url(url)
                         .header("Authorization", "Basic " + CouchDBHelper.getCredenciales())
                         .build();
                 Response response = client.newCall(request).execute();
+                Log.e(TAG, "Código respuesta: " + response.code());
+                Log.e(TAG, "Respuesta: " + response.body().string());
                 boolean conectado = response.isSuccessful();
                 new Handler(Looper.getMainLooper()).post(() -> {
                     if (conectado) callback.onSuccess("Conectado");
                     else callback.onError("Sin conexión");
                 });
             } catch (Exception e) {
+                Log.e(TAG, "Error de conexión: " + e.getMessage());
                 new Handler(Looper.getMainLooper()).post(() ->
                         callback.onError("Sin conexión"));
             }

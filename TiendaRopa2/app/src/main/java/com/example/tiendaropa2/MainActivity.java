@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(v ->
                 startActivity(new Intent(this, AgregarActivity.class)));
 
-        // Sincronizar al abrir la app
         sincronizarAlInicio();
         cargarLista();
     }
@@ -47,17 +46,13 @@ public class MainActivity extends AppCompatActivity {
         syncManager.verificarConexion(new SyncManager.SyncCallback() {
             @Override
             public void onSuccess(String mensaje) {
-                // Descargar productos de CouchDB
                 syncManager.descargarProductos(new SyncManager.SyncCallback() {
                     @Override
                     public void onSuccess(String msg) {
                         cargarLista();
-                        // Subir pendientes
                         syncManager.sincronizarPendientes(new SyncManager.SyncCallback() {
                             @Override
-                            public void onSuccess(String m) {
-                                cargarLista();
-                            }
+                            public void onSuccess(String m) { cargarLista(); }
                             @Override
                             public void onError(String e) {}
                         });
@@ -82,15 +77,17 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onEditar(Producto p) {
                             Intent i = new Intent(MainActivity.this, EditarActivity.class);
-                            i.putExtra("id", p.getId());
-                            i.putExtra("codigo", p.getCodigo());
-                            i.putExtra("nombre", p.getNombre());
-                            i.putExtra("marca", p.getMarca());
-                            i.putExtra("talla", p.getTalla());
-                            i.putExtra("precio", p.getPrecio());
+                            i.putExtra("id",          p.getId());
+                            i.putExtra("codigo",      p.getCodigo());
+                            i.putExtra("nombre",      p.getNombre());
+                            i.putExtra("marca",       p.getMarca());
+                            i.putExtra("talla",       p.getTalla());
+                            i.putExtra("precio",      p.getPrecio());
+                            i.putExtra("costo",       p.getCosto());   // ← nuevo
+                            i.putExtra("stock",       p.getStock());   // ← nuevo
                             i.putExtra("descripcion", p.getDescripcion());
-                            i.putExtra("foto", p.getFotoPath());
-                            i.putExtra("couchId", p.getCouchId());
+                            i.putExtra("foto",        p.getFotoPath());
+                            i.putExtra("couchId",     p.getCouchId());
                             startActivity(i);
                         }
 
@@ -104,10 +101,8 @@ public class MainActivity extends AppCompatActivity {
                                         if (p.getCouchId() != null && !p.getCouchId().isEmpty()) {
                                             syncManager.eliminarProducto(p,
                                                     new SyncManager.SyncCallback() {
-                                                        @Override
-                                                        public void onSuccess(String msg) {}
-                                                        @Override
-                                                        public void onError(String e) {}
+                                                        @Override public void onSuccess(String msg) {}
+                                                        @Override public void onError(String e) {}
                                                     });
                                         }
                                         cargarLista();
