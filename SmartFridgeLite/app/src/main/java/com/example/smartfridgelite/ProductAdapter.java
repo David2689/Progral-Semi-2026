@@ -17,14 +17,20 @@ import java.util.Locale;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
 
     private List<Product> products = new ArrayList<>();
-    private OnDeleteListener deleteListener;
+    private final OnDeleteListener deleteListener;
+    private final OnCartListener cartListener;
 
     public interface OnDeleteListener {
         void onDelete(Product product);
     }
 
-    public ProductAdapter(OnDeleteListener listener) {
-        this.deleteListener = listener;
+    public interface OnCartListener {
+        void onAddToCart(Product product);
+    }
+
+    public ProductAdapter(OnDeleteListener deleteListener, OnCartListener cartListener) {
+        this.deleteListener = deleteListener;
+        this.cartListener = cartListener;
     }
 
     public void setProducts(List<Product> products) {
@@ -64,16 +70,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             holder.statusIndicator.setBackgroundColor(Color.parseColor("#4CAF50"));
         }
 
-        holder.btnDelete.setOnClickListener(v -> {
+        holder.btnCart.setOnClickListener(v -> {
             new androidx.appcompat.app.AlertDialog.Builder(v.getContext())
-                    .setTitle("Eliminar producto")
-                    .setMessage("¿Seguro que quieres eliminar \"" + p.name + "\"?")
-                    .setPositiveButton("Sí, eliminar", (dialog, which) -> {
-                        deleteListener.onDelete(p);
-                    })
+                    .setTitle("Lista de compras")
+                    .setMessage("¿Agregar \"" + p.name + "\" a la lista de compras?")
+                    .setPositiveButton("Sí, agregar", (dialog, which) ->
+                            cartListener.onAddToCart(p))
                     .setNegativeButton("Cancelar", null)
                     .show();
         });
+
+        holder.btnDelete.setOnClickListener(v -> deleteListener.onDelete(p));
     }
 
     @Override
@@ -82,7 +89,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvCategory, tvDays;
         View statusIndicator;
-        ImageButton btnDelete;
+        ImageButton btnDelete, btnCart;
 
         ViewHolder(View v) {
             super(v);
@@ -91,6 +98,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             tvDays = v.findViewById(R.id.tvDaysLeft);
             statusIndicator = v.findViewById(R.id.statusIndicator);
             btnDelete = v.findViewById(R.id.btnDelete);
+            btnCart = v.findViewById(R.id.btnAddToCart);
         }
     }
 }

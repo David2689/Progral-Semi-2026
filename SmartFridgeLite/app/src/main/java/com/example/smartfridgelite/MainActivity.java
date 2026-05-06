@@ -20,29 +20,39 @@ public class MainActivity extends AppCompatActivity {
 
         repository = new ProductRepository(getApplication());
 
-        // Configurar RecyclerView
-        adapter = new ProductAdapter(product -> repository.delete(product));
+        // Adapter con dos listeners: eliminar y agregar a carrito
+        adapter = new ProductAdapter(
+                product -> {
+                    new androidx.appcompat.app.AlertDialog.Builder(this)
+                            .setTitle("Eliminar producto")
+                            .setMessage("¿Seguro que quieres eliminar \"" + product.name + "\"?")
+                            .setPositiveButton("Sí, eliminar", (dialog, which) ->
+                                    repository.delete(product))
+                            .setNegativeButton("Cancelar", null)
+                            .show();
+                },
+                product -> {
+                    product.inShoppingList = true;
+                    repository.update(product);
+                }
+        );
+
         binding.recyclerProducts.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerProducts.setAdapter(adapter);
 
-        // Observar todos los productos
         repository.getAllProducts().observe(this, products -> {
             adapter.setProducts(products);
         });
 
-        // Botón agregar producto
         binding.fabAdd.setOnClickListener(v ->
                 startActivity(new Intent(this, AddProductActivity.class)));
 
-        // Botón recetas
         binding.btnRecipes.setOnClickListener(v ->
                 startActivity(new Intent(this, RecipesActivity.class)));
 
-        // Botón lista de compras
         binding.btnShopping.setOnClickListener(v ->
                 startActivity(new Intent(this, ShoppingListActivity.class)));
 
-        // Programar notificaciones diarias
         NotificationHelper.scheduleDaily(this);
     }
 }

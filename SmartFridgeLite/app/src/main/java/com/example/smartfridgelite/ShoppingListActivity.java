@@ -18,10 +18,23 @@ public class ShoppingListActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         repository = new ProductRepository(getApplication());
-        adapter = new ProductAdapter(product -> {
-            product.inShoppingList = false;
-            repository.update(product);
-        });
+
+        adapter = new ProductAdapter(
+                // Botón X — confirmar antes de quitar de la lista
+                product -> {
+                    new androidx.appcompat.app.AlertDialog.Builder(this)
+                            .setTitle("Quitar de compras")
+                            .setMessage("¿Ya compraste \"" + product.name + "\"? Se quitará de tu lista.")
+                            .setPositiveButton("Sí, ya lo compré", (dialog, which) -> {
+                                product.inShoppingList = false;
+                                repository.update(product);
+                            })
+                            .setNegativeButton("Cancelar", null)
+                            .show();
+                },
+                // Botón + — no hace nada dentro de compras
+                product -> {}
+        );
 
         binding.recyclerShopping.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerShopping.setAdapter(adapter);
