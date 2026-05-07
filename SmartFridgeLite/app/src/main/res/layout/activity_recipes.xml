@@ -10,7 +10,8 @@
         android:layout_height="?attr/actionBarSize"
         android:background="#1976D2"
         android:title="🍳 Recetas sugeridas"
-        android:titleTextColor="@android:color/white" />
+        android:titleTextColor="@android:color/white"
+        android:id="@+id/toolbar"/>
 
     <TextView
         android:id="@+id/tvIngredients"

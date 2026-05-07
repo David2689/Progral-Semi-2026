@@ -11,9 +11,44 @@ import java.util.List;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
 
-    private List<RecipeManager.Recipe> recipes = new ArrayList<>();
+    public static class RecipeItem {
+        public String title;
+        public String ingredients;
+        public String instructions;
+        public boolean isOnline;
+        public String mealId;
 
-    public void setRecipes(List<RecipeManager.Recipe> recipes) {
+        // Constructor para recetas online
+        public RecipeItem(String title, String mealId) {
+            this.title = title;
+            this.mealId = mealId;
+            this.ingredients = "";
+            this.instructions = "Toca para ver la receta completa 👆";
+            this.isOnline = true;
+        }
+
+        // Constructor para recetas locales
+        public RecipeItem(RecipeManager.Recipe recipe) {
+            this.title = recipe.title;
+            this.ingredients = recipe.ingredients.replace(",", ", ");
+            this.instructions = recipe.instructions;
+            this.isOnline = false;
+            this.mealId = null;
+        }
+    }
+
+    public interface OnRecipeClickListener {
+        void onRecipeClick(RecipeItem recipe);
+    }
+
+    private List<RecipeItem> recipes = new ArrayList<>();
+    private OnRecipeClickListener clickListener;
+
+    public RecipeAdapter(OnRecipeClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
+
+    public void setRecipes(List<RecipeItem> recipes) {
         this.recipes = recipes;
         notifyDataSetChanged();
     }
@@ -28,10 +63,19 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        RecipeManager.Recipe r = recipes.get(position);
+        RecipeItem r = recipes.get(position);
         holder.tvTitle.setText("🍽️ " + r.title);
-        holder.tvIngredients.setText("🥗 Ingredientes: " + r.ingredients.replace(",", ", "));
-        holder.tvInstructions.setText("📋 " + r.instructions);
+
+        if (r.isOnline) {
+            holder.tvIngredients.setText("🌐 Receta en línea - TheMealDB");
+            holder.tvInstructions.setText("📋 " + r.instructions);
+            // Hacer la card clickeable
+            holder.itemView.setOnClickListener(v -> clickListener.onRecipeClick(r));
+        } else {
+            holder.tvIngredients.setText("🥗 Ingredientes: " + r.ingredients);
+            holder.tvInstructions.setText("📋 " + r.instructions);
+            holder.itemView.setOnClickListener(null);
+        }
     }
 
     @Override
