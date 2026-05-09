@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "1028627267530",
+    "firebase_url": "https://practica-firebase-ugb-2026-default-rtdb.firebaseio.com",
+    "project_id": "practica-firebase-ugb-2026",
+    "storage_bucket": "practica-firebase-ugb-2026.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1028627267530:android:fbcb59bc7a770c7d179933",
+        "android_client_info": {
+          "package_name": "com.example.mesajeriafirebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGR2qHPbCwznirsGLmHwsFOmUb5xiOO2Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
