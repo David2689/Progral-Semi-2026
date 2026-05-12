@@ -6,6 +6,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.smartfridgelite.databinding.ActivityRegisterBinding;
 import java.util.concurrent.Executors;
+import android.view.MenuItem;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -75,4 +76,13 @@ public class RegisterActivity extends AppCompatActivity {
         // Volver al login
         binding.tvLogin.setOnClickListener(v -> finish());
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
+

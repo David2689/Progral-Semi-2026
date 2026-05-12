@@ -3,6 +3,7 @@ package com.example.smartfridgelite;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,10 +26,11 @@ public class RecipesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityRecipesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setSupportActionBar(binding.toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         repository = new ProductRepository(getApplication());
 
-        // Cuando el usuario toca una receta online abre el navegador
         adapter = new RecipeAdapter(recipe -> {
             if (recipe.isOnline && recipe.mealId != null) {
                 String url = "https://www.themealdb.com/meal/" + recipe.mealId;
@@ -121,5 +123,14 @@ public class RecipesActivity extends AppCompatActivity {
             binding.tvIngredients.setText("📱 Recetas locales (sin internet):");
             adapter.setRecipes(items);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

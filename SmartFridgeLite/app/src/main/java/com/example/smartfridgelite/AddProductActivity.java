@@ -2,6 +2,7 @@ package com.example.smartfridgelite;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.smartfridgelite.databinding.ActivityAddProductBinding;
@@ -21,6 +22,10 @@ public class AddProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityAddProductBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setSupportActionBar(binding.toolbar);
+
+        // ← LÍNEA AGREGADA:
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         repository = new ProductRepository(getApplication());
 
@@ -54,5 +59,15 @@ public class AddProductActivity extends AppCompatActivity {
             Toast.makeText(this, "Producto guardado ✅", Toast.LENGTH_SHORT).show();
             finish();
         });
+    }
+
+    // ← MÉTODO AGREGADO:
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

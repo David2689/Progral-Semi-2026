@@ -61,7 +61,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             holder.tvDays.setTextColor(Color.parseColor("#F44336"));
             holder.statusIndicator.setBackgroundColor(Color.parseColor("#F44336"));
         } else if (p.isExpiringSoon()) {
-            holder.tvDays.setText("⏰ Vence en " + days + " día(s) - " + dateStr);
+            holder.tvDays.setText("⏰ Vence en " + days + " día(s)-" + dateStr);
             holder.tvDays.setTextColor(Color.parseColor("#FF9800"));
             holder.statusIndicator.setBackgroundColor(Color.parseColor("#FF9800"));
         } else {

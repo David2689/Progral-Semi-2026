@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
 
         repository = new ProductRepository(getApplication());
 
-        // Adapter con dos listeners: eliminar y agregar a carrito
         adapter = new ProductAdapter(
                 product -> {
                     new androidx.appcompat.app.AlertDialog.Builder(this)
@@ -54,5 +53,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, ShoppingListActivity.class)));
 
         NotificationHelper.scheduleDaily(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+        super.onBackPressed();
     }
 }

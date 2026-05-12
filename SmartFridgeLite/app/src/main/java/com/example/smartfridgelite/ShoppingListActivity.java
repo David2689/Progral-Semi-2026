@@ -1,6 +1,7 @@
 package com.example.smartfridgelite;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.smartfridgelite.databinding.ActivityShoppingListBinding;
@@ -18,11 +19,11 @@ public class ShoppingListActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle("🛒 Lista de compras");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         repository = new ProductRepository(getApplication());
 
         adapter = new ProductAdapter(
-                // Botón X — confirmar antes de quitar de la lista
                 product -> {
                     new androidx.appcompat.app.AlertDialog.Builder(this)
                             .setTitle("Quitar de compras")
@@ -34,7 +35,6 @@ public class ShoppingListActivity extends AppCompatActivity {
                             .setNegativeButton("Cancelar", null)
                             .show();
                 },
-                // Botón + — no hace nada dentro de compras
                 product -> {}
         );
 
@@ -44,5 +44,14 @@ public class ShoppingListActivity extends AppCompatActivity {
         repository.getShoppingList().observe(this, products -> {
             adapter.setProducts(products);
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

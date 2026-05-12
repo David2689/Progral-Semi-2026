@@ -13,7 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartFridgeLite">
 
-        <!-- Login es ahora la pantalla principal -->
         <activity
             android:name=".LoginActivity"
             android:exported="true">
@@ -23,11 +22,24 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".RegisterActivity" />
+        <!-- ← ESTO FALTABA: -->
         <activity android:name=".MainActivity" />
-        <activity android:name=".AddProductActivity" />
-        <activity android:name=".RecipesActivity" />
-        <activity android:name=".ShoppingListActivity" />
+
+        <activity
+            android:name=".AddProductActivity"
+            android:parentActivityName=".MainActivity" />
+
+        <activity
+            android:name=".RecipesActivity"
+            android:parentActivityName=".MainActivity" />
+
+        <activity
+            android:name=".ShoppingListActivity"
+            android:parentActivityName=".MainActivity" />
+
+        <activity
+            android:name=".RegisterActivity"
+            android:parentActivityName=".LoginActivity" />
 
     </application>
 </manifest>
