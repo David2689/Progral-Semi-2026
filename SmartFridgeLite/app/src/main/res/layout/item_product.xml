@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
-    app:cardBackgroundColor="#2C2C2C"
-    app:strokeColor="#444444"
-    app:strokeWidth="1dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
+    android:layout_marginBottom="12dp"
     app:cardCornerRadius="12dp"
-    app:cardElevation="2dp">
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="#2C2C2C"
+    app:strokeColor="#444444"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,8 +20,8 @@
 
         <View
             android:id="@+id/statusIndicator"
-            android:layout_width="8dp"
-            android:layout_height="60dp"
+            android:layout_width="10dp"
+            android:layout_height="70dp"
             android:background="#4CAF50"
             android:layout_marginEnd="16dp" />
 
@@ -31,45 +31,61 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
+            <!-- Nombre del producto más grande -->
             <TextView
                 android:id="@+id/tvProductName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:layout_marginBottom="4dp" />
 
+            <!-- Categoría -->
             <TextView
                 android:id="@+id/tvCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#888888"
-                android:textSize="13sp" />
+                android:textColor="#AAAAAA"
+                android:textSize="15sp"
+                android:layout_marginBottom="8dp" />
 
+            <!-- Días restantes más separado y grande -->
             <TextView
                 android:id="@+id/tvDaysLeft"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="13sp"
-                android:layout_marginTop="4dp" />
+                android:textSize="15sp"
+                android:lineSpacingExtra="4dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp" />
 
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/btnAddToCart"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_input_add"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Agregar a compras"
-            android:layout_marginEnd="8dp" />
+            android:orientation="vertical"
+            android:gravity="center">
 
-        <ImageButton
-            android:id="@+id/btnDelete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_delete"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Eliminar" />
+            <ImageButton
+                android:id="@+id/btnAddToCart"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:src="@android:drawable/ic_input_add"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Agregar a compras"
+                android:layout_marginBottom="8dp" />
+
+            <ImageButton
+                android:id="@+id/btnDelete"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:src="@android:drawable/ic_delete"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Eliminar" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
