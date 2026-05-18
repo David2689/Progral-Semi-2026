@@ -19,6 +19,7 @@ public class RegisterActivity extends AppCompatActivity {
         binding = ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
+        getSupportActionBar().setTitle("Crear cuenta");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         db = AppDatabase.getInstance(this);

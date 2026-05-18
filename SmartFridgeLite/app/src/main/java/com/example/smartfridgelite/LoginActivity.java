@@ -20,13 +20,13 @@ public class LoginActivity extends AppCompatActivity {
 
         db = AppDatabase.getInstance(this);
 
-        // Botón iniciar sesión
         binding.btnLogin.setOnClickListener(v -> {
             String email = binding.etEmail.getText().toString().trim();
             String password = binding.etPassword.getText().toString().trim();
 
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Completa todos los campos",
+                        Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -35,9 +35,13 @@ public class LoginActivity extends AppCompatActivity {
 
                 runOnUiThread(() -> {
                     if (usuario != null) {
-                        Toast.makeText(this,
-                                "¡Bienvenido " + usuario.nombre + "! 👋",
-                                Toast.LENGTH_SHORT).show();
+                        getSharedPreferences("session", MODE_PRIVATE)
+                                .edit()
+                                .putString("nombre", usuario.nombre)
+                                .putString("email", usuario.email)
+                                .putInt("id", usuario.id)
+                                .apply();
+
                         startActivity(new Intent(this, MainActivity.class));
                         finish();
                     } else {
@@ -49,7 +53,6 @@ public class LoginActivity extends AppCompatActivity {
             });
         });
 
-        // Ir a registro
         binding.tvRegister.setOnClickListener(v ->
                 startActivity(new Intent(this, RegisterActivity.class)));
     }

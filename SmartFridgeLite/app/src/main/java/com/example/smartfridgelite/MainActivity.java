@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.smartfridgelite.databinding.ActivityMainBinding;
+import android.content.SharedPreferences;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,6 +19,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        android.content.SharedPreferences prefs =
+                getSharedPreferences("session", MODE_PRIVATE);
+        String nombre = prefs.getString("nombre", "");
+        if (!nombre.isEmpty()) {
+            Toast.makeText(this, "¡Bienvenido " + nombre + "! 👋",
+                    Toast.LENGTH_SHORT).show();
+        }
 
         repository = new ProductRepository(getApplication());
 
@@ -62,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
         binding.btnShopping.setOnClickListener(v ->
                 startActivity(new Intent(this, ShoppingListActivity.class)));
 
+        binding.btnProfile.setOnClickListener(v ->
+                startActivity(new Intent(this, ProfileActivity.class)));
+
         NotificationHelper.scheduleDaily(this);
     }
 
@@ -69,5 +81,19 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         moveTaskToBack(true);
         super.onBackPressed();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+        if (item.getItemId() == R.id.action_profile) {
+            startActivity(new Intent(this, ProfileActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
