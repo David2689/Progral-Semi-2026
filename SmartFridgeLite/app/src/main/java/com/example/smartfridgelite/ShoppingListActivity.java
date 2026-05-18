@@ -35,6 +35,7 @@ public class ShoppingListActivity extends AppCompatActivity {
                             .setNegativeButton("Cancelar", null)
                             .show();
                 },
+                product -> {},
                 product -> {}
         );
 

@@ -19,6 +19,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     private List<Product> products = new ArrayList<>();
     private final OnDeleteListener deleteListener;
     private final OnCartListener cartListener;
+    private final OnEditListener editListener;
 
     public interface OnDeleteListener {
         void onDelete(Product product);
@@ -27,10 +28,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public interface OnCartListener {
         void onAddToCart(Product product);
     }
+    public interface OnEditListener {
+        void onEdit(Product product);
+    }
 
-    public ProductAdapter(OnDeleteListener deleteListener, OnCartListener cartListener) {
+    public ProductAdapter(OnDeleteListener deleteListener,
+                          OnCartListener cartListener,
+                          OnEditListener editListener) {
         this.deleteListener = deleteListener;
         this.cartListener = cartListener;
+        this.editListener = editListener;
     }
 
     public void setProducts(List<Product> products) {
@@ -81,6 +88,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         });
 
         holder.btnDelete.setOnClickListener(v -> deleteListener.onDelete(p));
+        holder.btnEdit.setOnClickListener(v -> editListener.onEdit(p));
     }
 
     @Override
@@ -90,6 +98,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         TextView tvName, tvCategory, tvDays;
         View statusIndicator;
         ImageButton btnDelete, btnCart;
+        ImageButton btnEdit;
 
         ViewHolder(View v) {
             super(v);
@@ -99,6 +108,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             statusIndicator = v.findViewById(R.id.statusIndicator);
             btnDelete = v.findViewById(R.id.btnDelete);
             btnCart = v.findViewById(R.id.btnAddToCart);
+            btnEdit = v.findViewById(R.id.btnEdit);
         }
     }
 }

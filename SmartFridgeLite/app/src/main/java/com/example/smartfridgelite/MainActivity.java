@@ -33,6 +33,16 @@ public class MainActivity extends AppCompatActivity {
                 product -> {
                     product.inShoppingList = true;
                     repository.update(product);
+                },
+                product -> {
+                    Intent intent = new Intent(this, EditProductActivity.class);
+                    intent.putExtra("id", product.id);
+                    intent.putExtra("name", product.name);
+                    intent.putExtra("category", product.category);
+                    intent.putExtra("quantity", product.quantity);
+                    intent.putExtra("expirationDate", product.expirationDate);
+                    intent.putExtra("inShoppingList", product.inShoppingList);
+                    startActivity(intent);
                 }
         );
 
