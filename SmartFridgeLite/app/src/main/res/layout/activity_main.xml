@@ -27,12 +27,12 @@
         android:padding="16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- Fila de botones -->
+        <!-- Fila superior: Recetas y Compras -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="8dp">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnRecipes"
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="🍳 Recetas"
-                android:layout_marginEnd="4dp" />
+                android:layout_marginEnd="8dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnShopping"
@@ -48,18 +48,18 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="🛒 Compras"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnProfile"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="👤 Perfil"
-                android:layout_marginStart="4dp" />
+                android:layout_marginStart="8dp" />
 
         </LinearLayout>
+
+        <!-- Fila inferior: Perfil -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="⚙️ Mi Perfil"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="16dp" />
 
         <TextView
             android:layout_width="wrap_content"
