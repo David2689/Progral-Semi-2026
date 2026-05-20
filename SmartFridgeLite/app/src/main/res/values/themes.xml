@@ -8,5 +8,15 @@
         <item name="android:textColorSecondary">#AAAAAA</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeSmall</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeMedium</item>
+
+    </style>
+    <style name="ShapeSmall" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerRadius">16dp</item>
+    </style>
+
+    <style name="ShapeMedium" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerRadius">16dp</item>
     </style>
 </resources>

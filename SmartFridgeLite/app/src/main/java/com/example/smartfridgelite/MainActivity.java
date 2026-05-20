@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.smartfridgelite.databinding.ActivityMainBinding;
 import android.content.SharedPreferences;
 import android.widget.Toast;
+import java.util.List;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -95,5 +97,13 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    private void checkExpiringProducts() {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            List<Product> expiring = repository.getExpiringSoonSync();
+            for (Product p : expiring) {
+                NotificationHelper.notifyProductExpiringSoon(this, p);
+            }
+        });
     }
 }

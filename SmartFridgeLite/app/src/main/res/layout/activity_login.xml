@@ -45,7 +45,8 @@
             android:hint="Correo electrónico"
             android:layout_marginBottom="16dp"
             app:boxStrokeColor="#1976D2"
-            app:hintTextColor="#AAAAAA">
+            app:boxStrokeWidth="1.5dp"
+            app:boxBackgroundColor="#1E1E1E">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etEmail"
                 android:layout_width="match_parent"
@@ -61,7 +62,8 @@
             android:hint="Contraseña"
             android:layout_marginBottom="24dp"
             app:boxStrokeColor="#1976D2"
-            app:hintTextColor="#AAAAAA"
+            app:boxStrokeWidth="1.5dp"
+            app:boxBackgroundColor="#1E1E1E"
             app:passwordToggleEnabled="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPassword"
@@ -78,7 +80,10 @@
             android:text="Iniciar sesión"
             android:textSize="16sp"
             android:layout_marginBottom="16dp"
-            app:backgroundTint="#1976D2" />
+            app:backgroundTint="#1976D2"
+            app:boxStrokeColor="#1976D2"
+            app:boxStrokeWidth="1.5dp"
+            app:boxBackgroundColor="#1E1E1E"/>
 
         <LinearLayout
             android:layout_width="wrap_content"

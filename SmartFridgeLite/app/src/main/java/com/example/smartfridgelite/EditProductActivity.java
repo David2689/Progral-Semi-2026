@@ -28,7 +28,6 @@ public class EditProductActivity extends AppCompatActivity {
 
         repository = new ProductRepository(getApplication());
 
-        // Recibir datos del producto a editar
         product = new Product(
                 getIntent().getStringExtra("name"),
                 getIntent().getStringExtra("category"),
@@ -38,18 +37,15 @@ public class EditProductActivity extends AppCompatActivity {
         product.id = getIntent().getIntExtra("id", 0);
         product.inShoppingList = getIntent().getBooleanExtra("inShoppingList", false);
 
-        // Rellenar campos con datos actuales
         binding.etName.setText(product.name);
         binding.etCategory.setText(product.category);
         binding.etQuantity.setText(String.valueOf(product.quantity));
 
-        // Mostrar fecha actual
         selectedDate.setTimeInMillis(product.expirationDate);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         binding.tvSelectedDate.setText("Fecha actual: " +
                 sdf.format(new Date(product.expirationDate)));
 
-        // Selector de nueva fecha
         binding.btnPickDate.setOnClickListener(v -> {
             DatePickerDialog dialog = new DatePickerDialog(this,
                     (view, year, month, day) -> {
@@ -63,15 +59,13 @@ public class EditProductActivity extends AppCompatActivity {
             dialog.show();
         });
 
-        // Guardar cambios
         binding.btnSave.setOnClickListener(v -> {
             String name = binding.etName.getText().toString().trim();
             String category = binding.etCategory.getText().toString().trim();
             String qtyStr = binding.etQuantity.getText().toString().trim();
 
             if (name.isEmpty() || category.isEmpty() || qtyStr.isEmpty()) {
-                Toast.makeText(this, "Completa todos los campos",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -81,6 +75,12 @@ public class EditProductActivity extends AppCompatActivity {
             product.expirationDate = selectedDate.getTimeInMillis();
 
             repository.update(product);
+
+            // Notificar si vence pronto
+            if (product.isExpiringSoon() || product.isExpired()) {
+                NotificationHelper.notifyProductExpiringSoon(this, product);
+            }
+
             Toast.makeText(this, "Producto actualizado ✅", Toast.LENGTH_SHORT).show();
             finish();
         });

@@ -23,8 +23,6 @@ public class AddProductActivity extends AppCompatActivity {
         binding = ActivityAddProductBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
-
-        // ← LÍNEA AGREGADA:
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         repository = new ProductRepository(getApplication());
@@ -56,12 +54,17 @@ public class AddProductActivity extends AppCompatActivity {
             int qty = Integer.parseInt(qtyStr);
             Product product = new Product(name, category, selectedDate.getTimeInMillis(), qty);
             repository.insert(product);
+
+            // Notificar si vence pronto
+            if (product.isExpiringSoon() || product.isExpired()) {
+                NotificationHelper.notifyProductExpiringSoon(this, product);
+            }
+
             Toast.makeText(this, "Producto guardado ✅", Toast.LENGTH_SHORT).show();
             finish();
         });
     }
 
-    // ← MÉTODO AGREGADO:
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {

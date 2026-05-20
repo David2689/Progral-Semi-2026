@@ -26,7 +26,7 @@ public class NotificationHelper extends Worker {
     @Override
     public Result doWork() {
         Context context = getApplicationContext();
-        createNotificationChannel(context);
+        createChannel(context);
 
         AppDatabase db = AppDatabase.getInstance(context);
         long now = System.currentTimeMillis();
@@ -56,7 +56,34 @@ public class NotificationHelper extends Worker {
         return Result.success();
     }
 
-    private void createNotificationChannel(Context context) {
+    // Notificación inmediata para un producto específico
+    public static void notifyProductExpiringSoon(Context context, Product product) {
+        createChannel(context);
+
+        long days = product.getDaysUntilExpiration();
+        String message;
+        if (days == 0) {
+            message = "⚠️ \"" + product.name + "\" vence HOY!";
+        } else if (days == 1) {
+            message = "⏰ \"" + product.name + "\" vence mañana!";
+        } else {
+            message = "📅 \"" + product.name + "\" vence en " + days + " días";
+        }
+
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(context, CHANNEL_ID)
+                        .setSmallIcon(android.R.drawable.ic_dialog_info)
+                        .setContentTitle("🧊 Smart Fridge - Producto por vencer")
+                        .setContentText(message)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setAutoCancel(true);
+
+        NotificationManager manager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify((int) System.currentTimeMillis(), builder.build());
+    }
+
+    private static void createChannel(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
                     CHANNEL_ID,

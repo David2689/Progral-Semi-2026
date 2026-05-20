@@ -52,6 +52,8 @@
                 android:hint="Nombre completo"
                 android:layout_marginBottom="16dp"
                 app:boxStrokeColor="#1976D2"
+                app:boxStrokeWidth="1.5dp"
+                app:boxBackgroundColor="#1E1E1E"
                 app:hintTextColor="#AAAAAA">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etNombre"
@@ -68,6 +70,8 @@
                 android:hint="Correo electrónico"
                 android:layout_marginBottom="16dp"
                 app:boxStrokeColor="#1976D2"
+                app:boxStrokeWidth="1.5dp"
+                app:boxBackgroundColor="#1E1E1E"
                 app:hintTextColor="#AAAAAA">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etEmail"
@@ -84,6 +88,8 @@
                 android:hint="Contraseña"
                 android:layout_marginBottom="16dp"
                 app:boxStrokeColor="#1976D2"
+                app:boxStrokeWidth="1.5dp"
+                app:boxBackgroundColor="#1E1E1E"
                 app:hintTextColor="#AAAAAA"
                 app:passwordToggleEnabled="true">
                 <com.google.android.material.textfield.TextInputEditText
@@ -101,6 +107,8 @@
                 android:hint="Confirmar contraseña"
                 android:layout_marginBottom="24dp"
                 app:boxStrokeColor="#1976D2"
+                app:boxStrokeWidth="1.5dp"
+                app:boxBackgroundColor="#1E1E1E"
                 app:hintTextColor="#AAAAAA"
                 app:passwordToggleEnabled="true">
                 <com.google.android.material.textfield.TextInputEditText
