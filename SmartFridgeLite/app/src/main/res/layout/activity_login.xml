@@ -85,6 +85,14 @@
             app:boxStrokeWidth="1.5dp"
             app:boxBackgroundColor="#1E1E1E"/>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBiometric"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🔏 Iniciar sesión con huella"
+            android:layout_marginBottom="16dp" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

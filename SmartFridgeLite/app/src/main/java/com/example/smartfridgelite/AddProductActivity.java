@@ -3,6 +3,10 @@ package com.example.smartfridgelite;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.smartfridgelite.databinding.ActivityAddProductBinding;
@@ -16,6 +20,27 @@ public class AddProductActivity extends AppCompatActivity {
     private ProductRepository repository;
     private Calendar selectedDate = Calendar.getInstance();
     private boolean dateSelected = false;
+    private String selectedCategory = "";
+
+    // Lista de categorías
+    private final String[] categories = {
+            "Selecciona una categoría",
+            "🥛 Lácteo",
+            "🥩 Carne",
+            "🐟 Pescado y Mariscos",
+            "🥦 Verdura",
+            "🍎 Fruta",
+            "🥚 Huevos",
+            "🍞 Pan y Cereales",
+            "🥫 Enlatados",
+            "🧂 Condimentos",
+            "🧃 Bebidas",
+            "🍰 Postres",
+            "❄️ Congelados",
+            "🌾 Granos y Legumbres",
+            "🫙 Conservas",
+            "Otro"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +52,32 @@ public class AddProductActivity extends AppCompatActivity {
 
         repository = new ProductRepository(getApplication());
 
+        // Configurar Spinner
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                categories
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerCategory.setAdapter(adapter);
+
+        binding.spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    selectedCategory = "";
+                } else {
+                    selectedCategory = categories[position];
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectedCategory = "";
+            }
+        });
+
+        // Selector de fecha
         binding.btnPickDate.setOnClickListener(v -> {
             DatePickerDialog dialog = new DatePickerDialog(this,
                     (view, year, month, day) -> {
@@ -41,21 +92,23 @@ public class AddProductActivity extends AppCompatActivity {
             dialog.show();
         });
 
+        // Guardar producto
         binding.btnSave.setOnClickListener(v -> {
             String name = binding.etName.getText().toString().trim();
-            String category = binding.etCategory.getText().toString().trim();
             String qtyStr = binding.etQuantity.getText().toString().trim();
 
-            if (name.isEmpty() || category.isEmpty() || qtyStr.isEmpty() || !dateSelected) {
-                Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show();
+            if (name.isEmpty() || selectedCategory.isEmpty() ||
+                    qtyStr.isEmpty() || !dateSelected) {
+                Toast.makeText(this, "Completa todos los campos",
+                        Toast.LENGTH_SHORT).show();
                 return;
             }
 
             int qty = Integer.parseInt(qtyStr);
-            Product product = new Product(name, category, selectedDate.getTimeInMillis(), qty);
+            Product product = new Product(name, selectedCategory,
+                    selectedDate.getTimeInMillis(), qty);
             repository.insert(product);
 
-            // Notificar si vence pronto
             if (product.isExpiringSoon() || product.isExpired()) {
                 NotificationHelper.notifyProductExpiringSoon(this, product);
             }

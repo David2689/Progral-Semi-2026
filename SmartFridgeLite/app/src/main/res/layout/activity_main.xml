@@ -37,17 +37,23 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnRecipes"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:layout_weight="1"
-                android:text="🍳 Recetas"
+                android:text="🍳&#10;Recetas"
+                android:textSize="18sp"
+                android:textAllCaps="false"
+                android:lineSpacingExtra="4dp"
                 android:layout_marginEnd="8dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnShopping"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:layout_weight="1"
-                android:text="🛒 Compras"
+                android:text="🛒&#10;Compras"
+                android:textSize="18sp"
+                android:textAllCaps="false"
+                android:lineSpacingExtra="4dp"
                 android:layout_marginStart="8dp" />
 
         </LinearLayout>
@@ -56,8 +62,10 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnProfile"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="⚙️ Mi Perfil"
+            android:layout_height="80dp"
+            android:text="⚙️  Mi Perfil"
+            android:textSize="18sp"
+            android:textAllCaps="false"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="16dp" />
 

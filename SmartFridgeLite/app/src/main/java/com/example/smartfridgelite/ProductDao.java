@@ -31,4 +31,7 @@ public interface ProductDao {
 
     @Query("SELECT * FROM products WHERE expirationDate BETWEEN :now AND :twoDaysLater ORDER BY expirationDate ASC")
     List<Product> getExpiringSoonSync(long now, long twoDaysLater);
+
+    @Insert
+    long insertAndGetId(Product product);
 }

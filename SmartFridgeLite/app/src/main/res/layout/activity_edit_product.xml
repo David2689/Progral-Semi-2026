@@ -41,20 +41,22 @@
                     android:textColor="#FFFFFF" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Categoría:"
+                android:textSize="16sp"
+                android:textColor="#FFFFFF"
+                android:layout_marginBottom="8dp" />
+
+            <Spinner
+                android:id="@+id/spinnerCategory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Categoría"
-                android:layout_marginBottom="16dp"
-                app:boxStrokeColor="#1976D2"
-                app:hintTextColor="#AAAAAA">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etCategory"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="#FFFFFF" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:background="#1E1E1E"
+                android:padding="12dp"
+                android:textColor="#FFFFFF"
+                android:layout_marginBottom="16dp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

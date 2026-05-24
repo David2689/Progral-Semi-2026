@@ -77,7 +77,21 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, ProfileActivity.class)));
 
         NotificationHelper.scheduleDaily(this);
+
+        // Sincronizar con Firebase
+        String userId = String.valueOf(prefs.getInt("id", 0));
+        FirebaseManager.syncProducts(userId, new FirebaseManager.OnProductsSyncedListener() {
+            @Override
+            public void onSynced(java.util.List<Product> products) {
+                android.util.Log.d("Firebase", "Sincronizado: " + products.size() + " productos");
+            }
+            @Override
+            public void onError(String error) {
+                android.util.Log.e("Firebase", "Error sync: " + error);
+            }
+        });
     }
+
 
     @Override
     public void onBackPressed() {
