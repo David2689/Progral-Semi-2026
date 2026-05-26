@@ -43,6 +43,9 @@ public class RecipesActivity extends AppCompatActivity {
         binding.recyclerRecipes.setAdapter(adapter);
 
         loadRecipes();
+
+        binding.btnAiRecipes.setOnClickListener(v ->
+                startActivity(new Intent(this, AiRecipesActivity.class)));
     }
 
     private void loadRecipes() {
